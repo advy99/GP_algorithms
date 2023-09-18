@@ -6,30 +6,30 @@ import csv
 import sys
 
 if len(sys.argv) != 3:
-	print("ERROR: Introduzca el nombre del fichero de data y la ruta de salida")
+	print("ERROR: Pass by argument the data file name and the output dir.")
 	exit()
 
-conjunto = sys.argv[1]
-salida = sys.argv[2]
+dataset_path = sys.argv[1]
+output_dir = sys.argv[2]
 
-with open(conjunto) as archivo_csv:
+with open(dataset_path) as csv_file:
     # leemos del csv
-	reader = csv.reader(archivo_csv,  delimiter = ',')
+	reader = csv.reader(csv_file,  delimiter = ',')
     # por cada linea
-	lineas = [i for i in reader]
-	X = [dato[:-1] for dato in lineas]
-	y = [dato[-1] for dato in lineas]
+	lines = [i for i in reader]
+	X = [data[:-1] for data in lines]
+	y = [data[-1] for data in lines]
 
 oversample = BorderlineSMOTE()
 X, y = oversample.fit_resample(X, y)
 
-X = [ list(map(lambda x: round(x), dato)) for dato in X]
+X = [ list(map(lambda x: round(x), data)) for data in X]
 
-f = open(salida, "w")
+f = open(output_dir, "w")
 
 i = 0
-for dato in X:
-	for value in dato:
+for data in X:
+	for value in data:
 		f.write(str(value))
 		f.write(',')
 	f.write(y[i])
